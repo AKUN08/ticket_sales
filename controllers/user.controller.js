@@ -146,3 +146,26 @@ exports.resetpassword = (request, response) => {
         })
 }
 
+exports.register = (request, response) => {
+    let newUser = {
+        firstname: request.body.firstname,
+        lastname: request.body.lastname,
+        email: request.body.email,
+        password: md5(request.body.password),
+        role: `user`
+    }
+    userModel.create(newUser)
+        .then(result => {
+            return response.json({
+                success: true,
+                data: result,
+                message: `New user has been registered`
+            })
+        })
+        .catch(error => {
+            return response.json({
+                success: false,
+                message: error.message
+            })
+        })
+    }

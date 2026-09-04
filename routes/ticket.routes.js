@@ -7,12 +7,16 @@ const app = express()
 app.use(express.json())
 /** load ticket's controller */
 const ticketController = require(`../controllers/ticket.controller`)
-/** create route to add new ticket using method "POST" */
-app.post("/", ticketController.addticket)
-/** create route to get data with method "GET" */
-app.get("/", ticketController.getallticket)
-/** create route to get data by id with method "GET" */
-app.get("/:id", ticketController.ticketByID)
-app.get("/event/:id", ticketController.ticketByeventID)
-/** export app in order to load in another file */
+/** load function from auth-controller */
+const { authorize } = require('../controllers/auth.controller')
+
+/** load function from role-validation */
+const {IsUser, IsAdmin} = require('../middlewares/role-validation')
+
+app.post("/", authorize, ticketController.addticket)
+app.get("/", authorize, ticketController.getallticket)
+app.get("/populer", authorize, IsAdmin, ticketController.getMostPopularEvent)
+app.get("/:id", authorize, IsAdmin, ticketController.ticketByID)
+app.get("/event/:id", authorize, IsAdmin, ticketController.ticketByeventID)
+app.get("/user/:id", authorize, IsAdmin, ticketController.ticketByuserID)
 module.exports = app

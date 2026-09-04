@@ -10,23 +10,44 @@ app.use(express.json())
 /** load user's controller */
 const userController = require(`../controllers/user.controller`)
 
-/** create route to get data with method "GET" */
-app.get("/", userController.getAllUser)
+/** load function from simple-middleware */
+const { midOne } = require("../middlewares/simple-middleware")
 
-/** create route to find user
- *using method "GET" and define parameter "key" for keyword */
-app.get("/:key", userController.findUser)
+/** load function from user-validation */
+const { validateUser } = require("../middlewares/user-validation")
+
+/** load function from auth-controller */
+const { authorize } = require('../controllers/auth.controller')
+
+/** load function from role-validation */
+const {IsUser, IsAdmin} = require('../middlewares/role-validation')
+
+/** create route to get data with method "GET" */
+app.get("/", [midOne],authorize,IsAdmin, userController.getAllUser)
 
 /** create route to add new user using method "POST" */
-app.post("/", userController.addUser)
+app.post("/",authorize,IsAdmin, validateUser, userController.addUser)
 
 /** create route to update user 
  * using method "PUT" and define parameter for "id" */
-app.put("/:id", userController.updateUser)
+app.put("/:id",authorize,IsUser, validateUser, userController.updateUser)
+
+/** create route to find user
+ *using method "GET" and define parameter "key" for keyword */
+app.get("/:key",authorize,IsAdmin, userController.findUser)
+
+/** create route to add new user using method "POST" */
+app.post("/",authorize,IsAdmin, validateUser, userController.addUser)
+
+/** create route to update user 
+ * using method "PUT" and define parameter for "id" */
+app.put("/:id",authorize,IsUser, validateUser, userController.updateUser)
 
 /** create route to delete user 
  * using method "DELETE" and define parameter for "id" */
-app.delete("/:id", userController.deleteUser)
+app.delete("/:id",authorize,IsAdmin, userController.deleteUser)
+
+app.post("/register", validateUser, userController.register)
 
 app.put("/reset/:id", userController.resetpassword)
 

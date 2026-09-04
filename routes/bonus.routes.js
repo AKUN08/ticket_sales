@@ -14,7 +14,6 @@ app.post("/", userController.addbonus)
 
 app.put("/:id", userController.updatebonus)
 
-
 app.delete("/:id", userController.deletebonus)
 
 module.exports = app
