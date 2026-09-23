@@ -14,11 +14,13 @@ const eventRoute = require('./routes/event.routes')
 const seatRoute = require('./routes/seat.routes')
 const ticketRoute = require('./routes/ticket.routes')
 const auth = require(`./routes/auth.routes`)
+const ongkirRoute = require(`./routes/ongkir.routes`)
 
 app.use(`/user`, userRoute)
 app.use(`/bonus`, bonusRoute)
 app.use(`/event`, eventRoute)
 app.use(`/seat`, seatRoute)
+app.use(`/ongkir`, ongkirRoute)
 app.use(`/ticket`, ticketRoute)
 app.use(`/auth`, auth)
 

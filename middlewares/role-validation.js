@@ -24,4 +24,3 @@ exports.IsAdmin = async (request, response, next) => {
         })
     }
   }
-

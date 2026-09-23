@@ -168,4 +168,4 @@ exports.register = (request, response) => {
                 message: error.message
             })
         })
-    }
+    }   
